@@ -5,3 +5,5 @@ dj-config-url
 psycopg2-binary
 twilio
 celery[redis]
+drf-yasg
+django-cors-headers

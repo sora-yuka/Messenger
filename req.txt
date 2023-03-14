@@ -1,2 +1,7 @@
 django
 djangorestframework
+python-decouple
+dj-config-url
+psycopg2-binary
+twilio
+celery[redis]

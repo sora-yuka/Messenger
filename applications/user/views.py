@@ -17,7 +17,7 @@ class UserCreateWithEmailView(generics.CreateAPIView):
         user = serializer.save()
         send_email_verification_code(user.email, user.activation_code)
         return Response({
-            "msg": "Вы успешно зарегистрировались, к вам на почту отправили письмо с активацией вашего профиля"
+            "msg": "Вы успешно зарегистрировались, вам на почту отправили письмо с активацией вашего профиля"
         }, status=status.HTTP_201_CREATED)
 
 

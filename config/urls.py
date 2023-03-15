@@ -35,4 +35,3 @@ urlpatterns = [
 
     path('swagger/', schema_view.with_ui('swagger')),
 ]
-

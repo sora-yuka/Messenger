@@ -1,5 +1,6 @@
 django
 djangorestframework
+djangorestframework-simplejwt
 python-decouple
 dj-config-url
 psycopg2-binary

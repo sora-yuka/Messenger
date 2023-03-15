@@ -10,22 +10,23 @@ from djangochannelsrestframework.observer.generics import (ObserverModelInstance
 from applications.message.models import ChatMessage, Chat
 from applications.message.serializers import ChatMessageSerializer, ChatSerializer
 from applications.user.serializers import UserCreateWithEmailSerializer
+from applications.user.models import User
 
 
 class ChatConsumer(ObserverModelInstanceMixin, GenericAsyncAPIConsumer):
-    queryset = Room.objects.all()
-    serializer_class = RoomSerializer
+    queryset = Chat.objects.all()
+    serializer_class = ChatSerializer
     lookup_field = 'pk'
 
     async def disconnect(self, code):
-        if hasattr(self, 'room_subscribe'):
+        if hasattr(self, 'chat_subscribe'):
             await self.remove_user_from_room(self.room_subscribe)
             await self.notify_users()
         await super().disconnect(code)
 
     @action()
     async def join_room(self, pk, **kwargs):
-        self.room_subscribe = pk
+        self.chat_subscribe = pk
         await self.add_user_to_room(pk)
         await self.notify_users()
 
@@ -35,67 +36,67 @@ class ChatConsumer(ObserverModelInstanceMixin, GenericAsyncAPIConsumer):
 
     @action()
     async def create_message(self, message, **kwargs):
-        room: Room = await self.get_room(pk=self.room_subscribe)
-        await database_sync_to_async(Message.objects.create)(
-            room=room,
+        chat: Chat = await self.get_chat(pk=self.chat_subscribe)
+        await database_sync_to_async(ChatMessage.objects.create)(
+            chat=chat,
             user=self.scope['user'],
             text=message
         )
     
     @action()
-    async def subscribe_to_messages_in_room(self, pk, **kwargs):
-        await self.message_activity.subscribe(room=pk)
+    async def subscribe_to_messages_in_chat(self, pk, **kwargs):
+        await self.message_activity.subscribe(chat=pk)
 
-    @model_observer(Message)
+    @model_observer(ChatMessage)
     async def message_activity(self, message, observer=None, **kwargs):
         await self.send_json(message)
 
     @message_activity.groups_for_signal
-    def message_activity(self, instance: Message, **kwargs):
-        yield f'room__{instance.room_id}'
+    def message_activity(self, instance: ChatMessage, **kwargs):
+        yield f'chat__{instance.room_id}'
         yield f'pk__{instance.pk}'
 
     @message_activity.groups_for_consumer
-    def message_activity(self, room=None, **kwargs):
-        if room is not None:
-            yield f'room__{room}'
+    def message_activity(self, chat=None, **kwargs):
+        if chat is not None:
+            yield f'chat__{chat}'
 
     @message_activity.serializer
-    def message_activity(self, instance: Message, action, **kwargs):
-        return dict(data=MessageSerializer(instance).data, action=action.value, pk=instance.pk)
+    def message_activity(self, instance: ChatMessage, action, **kwargs):
+        return dict(data=ChatMessageSerializer(instance).data, action=action.value, pk=instance.pk)
 
-    async def notify_users(self):
-        room: Room = await self.get_room(self.room_subscribe)
+    async def notify_members(self):
+        chat: Chat = await self.get_chat(self.chat_subscribe)
         for group in self.groups:
             await self.channel_layer.group_send(
                 group,
                 {
-                    'type': 'update_users',
-                    'usuarios': await self.current_users(room)
+                    'type': 'update_members',
+                    'usuarios': await self.current_members(chat)
                 }
             )
 
-    async def update_users(self, event: dict):
+    async def update_members(self, event: dict):
         await self.send(text_data=json.dumps({'usuarios': event["usuarios"]}))
 
     @database_sync_to_async
-    def get_room(self, pk: int) -> Room:
-        return Room.objects.get(pk=pk)
+    def get_chat(self, pk: int) -> Chat:
+        return Chat.objects.get(pk=pk)
 
     @database_sync_to_async
-    def current_users(self, room: Room):
-        return [UserSerializer(user).data for user in room.current_users.all()]
+    def current_members(self, chat: Chat) -> list:
+        return [UserSerializer(user).data for user in chat.current_members.all()]
 
     @database_sync_to_async
-    def remove_user_from_room(self, room):
+    def remove_member_from_room(self, chat):
         user: User = self.scope['user']
-        user.current_rooms.remove(room)
+        user.current_chats.remove(chat)
 
     @database_sync_to_async
-    def add_user_to_room(self, pk):
+    def add_user_to_chat(self, pk):
         user: User = self.scope['user']
-        if not user.current_rooms.filter(pk=self.room_subscribe).exists():
-            user.current_rooms.add(Room.objects.get(pk=pk))
+        if not user.current_chats.filter(pk=self.chat_subscribe).exists():
+            user.current_chats.add(Chat.objects.get(pk=pk))
 
 
 class UserConsumer(

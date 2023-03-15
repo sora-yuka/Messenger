@@ -32,6 +32,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/account/', include('applications.user.urls')),
     path('api/v1/chat/', include('applications.message.urls')),
-
     path('swagger/', schema_view.with_ui('swagger')),
 ]

@@ -5,19 +5,19 @@ from applications.user.serializers import UserCreateWithEmailSerializer
 
 class ChatMessageSerializer(serializers.ModelSerializer):
     created_at_formatted = serializers.SerializerMethodField()
-    user = UserCreateWithEmailSerializer()
+    # user = UserCreateWithEmailSerializer()
         
     class Meta:
         model = ChatMessage
         fields = '__all__'
         
-    def get_created_at_formatted(self, obj: ChatMessage) -> obj:
+    def get_created_at_formatted(self, obj: ChatMessage):
         return obj.created_at.strftime('%H:%M')
 
 
 class ChatSerializer(serializers.ModelSerializer):
     last_message = serializers.SerializerMethodField()
-    messages = MessageSerializer(many=True, read_only=True)
+    messages = ChatMessageSerializer(many=True, read_only=True)
     
     class Meta:
         model = Chat

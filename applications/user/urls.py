@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from applications.user import views
 
 urlpatterns = [
     path('registers/email/', views.UserCreateWithEmailView.as_view()),

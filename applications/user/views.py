@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.contrib.auth import get_user_model
 
-from .serializers import UserCreateWithEmailSerializer, UserCreateWithPhoneNumberSerializer
-from .tasks import send_email_verification_code, send_sms_verification_code
+from applications.user.serializers import UserCreateWithEmailSerializer, UserCreateWithPhoneNumberSerializer
+from applications.user.tasks import send_email_verification_code, send_sms_verification_code
 
 User = get_user_model()
 

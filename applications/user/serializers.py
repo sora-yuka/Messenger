@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from . import tasks
+from applications.user import tasks
 
 
 User = get_user_model()
@@ -64,6 +64,3 @@ class UserCreateWithPhoneNumberSerializer(serializers.ModelSerializer):
         user.save()
         tasks.send_sms_verification_code.delay(code=user.activation_code, receiver=user.phone_number)
         return user
-
-
-

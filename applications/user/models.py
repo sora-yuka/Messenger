@@ -1,8 +1,8 @@
 from django.db import models
-from app.user.managers import UserManager
+from applications.user.managers import UserManager
+from django.contrib.auth.models import AbstractUser
 import uuid
 import random
-from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):

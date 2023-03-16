@@ -2,6 +2,7 @@ from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from applications.user import views
 
+
 urlpatterns = [
     path('register/email/', views.UserCreateWithEmailView.as_view()),
     path('activate/<uuid:activation_code>/', views.ActivationApiView.as_view()),

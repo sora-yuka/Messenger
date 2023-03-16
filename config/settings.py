@@ -164,7 +164,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000"
 ]
-<<<<<<< HEAD
 
 
 REST_FRAMEWORK = {
@@ -205,5 +204,3 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
-=======
->>>>>>> ade4dc681022f41ba2ee0a532f6de1754c35fe4f

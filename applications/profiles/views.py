@@ -1,6 +1,6 @@
 
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.viewsets import mixins
+from rest_framework.viewsets import mixins, GenericViewSet
 
 from applications.profiles.models import UserProfile
 from applications.profiles.serializers import ProfileSerializer

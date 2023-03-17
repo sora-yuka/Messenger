@@ -7,7 +7,5 @@ twilio
 celery[redis]
 drf-yasg
 django-cors-headers
-<<<<<<< HEAD
 djangorestframework-simplejwt
-=======
->>>>>>> ade4dc681022f41ba2ee0a532f6de1754c35fe4f
+

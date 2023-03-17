@@ -40,15 +40,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # app
-    'app.user',
-    # 'app.message',
+    # applications
+    'applications.user',
+    'applications.message',
     
     # packages
     'rest_framework',
     'rest_framework_simplejwt',
     'drf_yasg',
     'corsheaders',
+    'rest_framework_simplejwt',
     
 ]
 
@@ -88,7 +89,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-     'default': dj_database_url.config(default=config('DB_URL'))
+     'default': dj_database_url.config(default=config('DATABASE_URL'))
 }
 
 

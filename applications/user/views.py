@@ -7,8 +7,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import views
 from datetime import datetime, timezone
 from . import tasks, serializers
-from .serializers import UserCreateWithEmailSerializer, ForgotPasswordSerializer, ForgotPasswordConfirmSerializer
-
+from .serializers import ForgotPasswordSerializer, ForgotPasswordConfirmSerializer, UserCreateWithEmailSerializer
 User = get_user_model()
 
 
@@ -73,19 +72,3 @@ class ChangePasswordApiView(CreateAPIView):
 
 
 
-
-
-
-
-
-# class UserCreateWithPhoneNumberView(generics.CreateAPIView):
-#     serializer_class = UserCreateWithPhoneNumberSerializer
-#     permission_classes = [AllowAny]
-#
-#     def perform_create(self, serializer):
-#         user = serializer.save()
-#         send_sms_verification_code(user.phone_number, user.activation_code)
-#
-#         return Response({
-#             "msg": "Вы успешно зарегистрировались, на ваш телефон отправлено сообщение с кодом подтверждения"
-#         }, status=status.HTTP_201_CREATED)

@@ -1,7 +1,6 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-
-from . import views
+from applications.user import views
 
 urlpatterns = [
     path('register/email/', views.UserCreateWithEmailView.as_view()),

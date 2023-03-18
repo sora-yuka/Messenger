@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # applications
     'applications.user',
     'applications.message',
+    'applications.profiles',
     
     # packages
     'rest_framework',

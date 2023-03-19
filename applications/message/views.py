@@ -6,7 +6,7 @@ from applications.message.models import Message
 
 
 class MessageViewSet(ModelViewSet):
-    serializer_class = MessageSerializer()
+    serializer_class = MessageSerializer
     queryset = Message.objects.all()
     permission_classes = [IsAuthenticated]
     

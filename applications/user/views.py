@@ -53,6 +53,7 @@ class ForgotPasswordConfirmApiView(views.APIView):
         )
 
 
+
 class ActivationApiView(views.APIView):
     def get(self, request, activation_code):
         try:

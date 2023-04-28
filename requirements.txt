@@ -1,6 +1,7 @@
 django
 djangorestframework
 djangorestframework-simplejwt
+channels
 python-decouple
 dj-config-url
 psycopg2-binary
@@ -9,3 +10,4 @@ celery[redis]
 drf-yasg
 django-cors-headers
 djangochannelsrestframework
+daphne
